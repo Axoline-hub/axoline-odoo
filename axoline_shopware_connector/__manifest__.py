@@ -2,7 +2,7 @@
 
 {
     'name': 'Axoline Shopware Connector',
-    'version': '19.0.1.1.47',
+    'version': '19.0.1.1.48',
     'category': 'Sales/Sales',
     'summary': 'Bidirektionale Synchronisation zwischen Odoo und Shopware 6',
     'description': """
@@ -22,6 +22,7 @@ Odoo und einem Shopware 6 Shop:
     'author': 'Axoline',
     'website': 'https://www.axoline.de',
     'support': 'info@axoline.de',
+	'images': ['static/description/main_screenshot.png'],
     'price': 299.0,
     'currency': 'EUR',
     'depends': [
