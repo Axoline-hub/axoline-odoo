@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Backend Form View -->
+    <record id="shopware_backend_view_form" model="ir.ui.view">
+        <field name="name">shopware.backend.form</field>
+        <field name="model">shopware.backend</field>
+        <field name="arch" type="xml">
+            <form string="Shopware Backend">
+                <header>
+                    <button name="action_test_connection"
+                            string="Verbindung testen"
+                            type="object"
+                            class="oe_highlight"
+                            invisible="state == 'confirmed'"/>
+                    <button name="action_test_connection"
+                            string="Erneut testen"
+                            type="object"
+                            invisible="state != 'confirmed'"/>
+                    <button name="action_sync_all"
+                            string="Alles synchronisieren"
+                            type="object"
+                            class="oe_highlight"
+                            invisible="state != 'confirmed'"/>
+                    <button name="action_diagnose_api"
+                            string="API Diagnose"
+                            type="object"
+                            invisible="state != 'confirmed'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_products" type="object"
+                                class="oe_stat_button" icon="fa-cube">
+                            <field name="product_count" widget="statinfo" string="Produkte"/>
+                        </button>
+                        <button name="action_view_categories" type="object"
+                                class="oe_stat_button" icon="fa-folder">
+                            <field name="category_count" widget="statinfo" string="Kategorien"/>
+                        </button>
+                        <button name="action_view_customers" type="object"
+                                class="oe_stat_button" icon="fa-users">
+                            <field name="customer_count" widget="statinfo" string="Kunden"/>
+                        </button>
+                        <button name="action_view_orders" type="object"
+                                class="oe_stat_button" icon="fa-shopping-cart">
+                            <field name="order_count" widget="statinfo" string="Bestellungen"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Backend-Name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Verbindung">
+                            <field name="url" placeholder="https://meinshop.de"/>
+                            <field name="client_id"/>
+                            <field name="client_secret" password="True"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group string="Standard-Einstellungen">
+                            <field name="default_sales_channel_id"/>
+                            <field name="default_tax_id"/>
+                            <field name="default_payment_term_id"/>
+                            <field name="import_order_status"/>
+                            <field name="import_orders_from_date"/>
+                            <field name="import_order_limit"/>
+                            <field name="sync_order_linked_refresh_limit"/>
+                            <field name="order_push_in_progress_on_import"/>
+                            <field name="order_import_open_transition"
+                                   invisible="not order_push_in_progress_on_import"/>
+                            <field name="push_delivery_shipped_on_picking_done"/>
+                            <field name="push_order_completed_when_shipped_and_invoiced"/>
+                            <field name="order_complete_transition"
+                                   invisible="not push_order_completed_when_shipped_and_invoiced"/>
+                            <field name="import_order_test_id" placeholder="z. B. 0192b8c3-…"/>
+                            <field name="import_customer_test_id" placeholder="z. B. 0192b8c3-…"/>
+                            <field name="import_customer_limit"/>
+                            <field name="api_batch_size"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Import-Einstellungen" name="import_settings">
+                            <group>
+                                <group string="Import (Shopware → Odoo)">
+                                    <field name="sync_products"/>
+                                    <field name="sync_categories"/>
+                                    <field name="sync_customers"/>
+                                    <field name="sync_orders"/>
+                                    <field name="preserve_variant_data_on_attribute_change"/>
+                                </group>
+                                <group string="Export (Odoo → Shopware)">
+                                    <field name="export_products"/>
+                                    <field name="export_categories"/>
+                                </group>
+                            </group>
+                            <group string="Manuelle Aktionen" invisible="state != 'confirmed'">
+                                <div class="o_row">
+                                    <button name="action_sync_categories" string="Kategorien importieren"
+                                            type="object" class="btn-secondary me-2"
+                                            invisible="not sync_categories"/>
+                                    <button name="action_sync_products" string="Produkte importieren"
+                                            type="object" class="btn-secondary me-2"
+                                            invisible="not sync_products"/>
+                                    <button name="action_sync_customers" string="Kunden importieren"
+                                            type="object" class="btn-secondary me-2"
+                                            invisible="not sync_customers"/>
+                                    <button name="action_sync_orders" string="Bestellungen importieren"
+                                            type="object" class="btn-secondary me-2"
+                                            invisible="not sync_orders"/>
+                                </div>
+                                <div class="o_row mt-2">
+                                    <button name="action_export_categories" string="Kategorien exportieren"
+                                            type="object" class="btn-secondary me-2"
+                                            invisible="not export_categories"/>
+                                    <button name="action_export_products" string="Produkte exportieren"
+                                            type="object" class="btn-secondary me-2"
+                                            invisible="not export_products"/>
+                                </div>
+                            </group>
+                        </page>
+                        <page string="Synchronisations-Log" name="sync_log">
+                            <group>
+                                <field name="last_sync_date"/>
+                                <field name="last_product_sync"/>
+                                <field name="last_category_sync"/>
+                                <field name="last_customer_sync"/>
+                                <field name="last_order_sync"/>
+                            </group>
+                            <div>
+                                <button name="action_reset_sync_dates"
+                                        string="Alle Sync-Daten zurücksetzen (Voll-Import erzwingen)"
+                                        type="object"
+                                        class="btn-warning"
+                                        confirm="Dadurch werden beim nächsten Sync ALLE Daten neu importiert. Fortfahren?"/>
+                            </div>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Backend List View -->
+    <record id="shopware_backend_view_list" model="ir.ui.view">
+        <field name="name">shopware.backend.list</field>
+        <field name="model">shopware.backend</field>
+        <field name="arch" type="xml">
+            <list string="Shopware Backends">
+                <field name="name"/>
+                <field name="url"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'confirmed'"
+                       decoration-danger="state == 'error'"
+                       decoration-info="state == 'draft'"/>
+                <field name="last_sync_date"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Backend Action -->
+    <record id="shopware_backend_action" model="ir.actions.act_window">
+        <field name="name">Shopware Backends</field>
+        <field name="res_model">shopware.backend</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Erstellen Sie Ihre erste Verbindung (Shopware 6)
+            </p>
+            <p>
+                Verbinden Sie Ihren Shopware-Shop mit Odoo, um Bestellungen,
+                Produkte, Kunden und Kategorien zu synchronisieren.
+            </p>
+        </field>
+    </record>
+
+</odoo>

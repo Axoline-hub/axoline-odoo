@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Category Form View -->
+    <record id="shopware_category_view_form" model="ir.ui.view">
+        <field name="name">shopware.category.form</field>
+        <field name="model">shopware.category</field>
+        <field name="arch" type="xml">
+            <form string="Shopware Kategorie">
+                <header>
+                    <button name="action_export_to_shopware"
+                            string="Zu Shopware exportieren"
+                            type="object"
+                            class="oe_highlight"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="backend_id"/>
+                            <field name="shopware_id"/>
+                            <field name="odoo_category_id"/>
+                            <field name="parent_id"/>
+                            <field name="level"/>
+                        </group>
+                        <group>
+                            <field name="active"/>
+                            <field name="sync_date"/>
+                        </group>
+                    </group>
+                    <group string="Beschreibung">
+                        <field name="description" nolabel="1" colspan="2"/>
+                    </group>
+                    <group string="Unterkategorien">
+                        <field name="child_ids" nolabel="1">
+                            <list>
+                                <field name="name"/>
+                                <field name="shopware_id"/>
+                                <field name="level"/>
+                            </list>
+                        </field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Category List View -->
+    <record id="shopware_category_view_list" model="ir.ui.view">
+        <field name="name">shopware.category.list</field>
+        <field name="model">shopware.category</field>
+        <field name="arch" type="xml">
+            <list string="Shopware Kategorien" decoration-muted="not active">
+                <field name="name"/>
+                <field name="shopware_id"/>
+                <field name="parent_id"/>
+                <field name="odoo_category_id"/>
+                <field name="level"/>
+                <field name="active" string="Aktiv" optional="show"/>
+                <field name="backend_id" optional="hide"/>
+                <field name="sync_date" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Category Search View -->
+    <record id="shopware_category_view_search" model="ir.ui.view">
+        <field name="name">shopware.category.search</field>
+        <field name="model">shopware.category</field>
+        <field name="arch" type="xml">
+            <search string="Shopware Kategorien">
+                <field name="name"/>
+                <field name="shopware_id"/>
+                <field name="backend_id"/>
+                <filter string="Aktiv (Shopware)" name="active" domain="[('active', '=', True)]"/>
+                <filter string="Inaktiv (Shopware)" name="inactive" domain="[('active', '=', False)]"/>
+                <group>
+                    <filter string="Backend" name="group_backend" context="{'group_by': 'backend_id'}"/>
+                    <filter string="Übergeordnet" name="group_parent" context="{'group_by': 'parent_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Category Action -->
+    <record id="shopware_category_action" model="ir.actions.act_window">
+        <field name="name">Shopware Kategorien</field>
+        <field name="res_model">shopware.category</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'active_test': False}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Noch keine Kategorien synchronisiert
+            </p>
+            <p>
+                Starten Sie die Kategorie-Synchronisation im Backend.
+            </p>
+        </field>
+    </record>
+
+</odoo>

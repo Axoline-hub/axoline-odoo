@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Axoline Shopware Connector for Odoo 19</title>
+</head>
+<body>
+    <section class="container mt-4 mb-4">
+        <div class="row align-items-center mb-4">
+            <div class="col-md-2 text-center text-md-left mb-3 mb-md-0">
+                <img src="icon.png" alt="Axoline Shopware Connector" class="img-fluid" style="max-width: 96px;"/>
+            </div>
+            <div class="col-md-10">
+                <h1 class="mb-2">Axoline Shopware Connector</h1>
+                <p class="lead mb-0 text-muted">
+                    Connect <strong>Shopware 6</strong> to <strong>Odoo 19</strong>: synchronize products, categories,
+                    customers, and orders inside your Odoo database—no separate middleware server required.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="container mb-5">
+        <h2 class="border-bottom pb-2 mb-4">Key features</h2>
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <h3 class="h5">Products &amp; categories</h3>
+                <p class="mb-0">
+                    Import and align <strong>products</strong> and <strong>product categories</strong> between Shopware and Odoo.
+                    Export paths support pushing Odoo data back to Shopware where configured.
+                </p>
+            </div>
+            <div class="col-md-6 mb-4">
+                <h3 class="h5">Customers</h3>
+                <p class="mb-0">
+                    Synchronize <strong>customers</strong> and link them to Odoo contacts for a single customer view
+                    across ecommerce and ERP.
+                </p>
+            </div>
+            <div class="col-md-6 mb-4">
+                <h3 class="h5">Orders &amp; sales</h3>
+                <p class="mb-0">
+                    Import <strong>sales orders</strong> from Shopware into Odoo, including linkage to the Shopware order record.
+                    Order and payment metadata can be reflected on the Odoo sales order for traceability.
+                </p>
+            </div>
+            <div class="col-md-6 mb-4">
+                <h3 class="h5">Automation</h3>
+                <p class="mb-0">
+                    Use <strong>scheduled jobs (cron)</strong> for recurring sync and run <strong>manual</strong> operations
+                    from the Shopware backend screens in Odoo.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="container mb-5">
+        <h2 class="border-bottom pb-2 mb-4">How it works</h2>
+        <p>
+            The module adds a <strong>Shopware</strong> application menu and <strong>backend</strong> records where you store
+            your Shopware 6 API credentials (OAuth client). After a successful connection test, you can import and export
+            the supported objects according to your settings.
+        </p>
+        <p class="mb-0">
+            Communication uses the <strong>Shopware 6 Admin API</strong>. Your Shopware shop must be reachable from the Odoo
+            server (network / firewall). Operation requires valid API credentials created in Shopware.
+        </p>
+    </section>
+
+    <section class="container mb-5">
+        <h2 class="border-bottom pb-2 mb-4">Requirements</h2>
+        <ul class="mb-0">
+            <li><strong>Odoo</strong> 19.0 (Community or Enterprise), with standard apps as declared in the module dependencies.</li>
+            <li><strong>Shopware 6</strong> with Admin API access and OAuth credentials (client ID / secret).</li>
+            <li>Outbound HTTPS from Odoo to your Shopware base URL.</li>
+        </ul>
+    </section>
+
+    <section class="container mb-5">
+        <h2 class="border-bottom pb-2 mb-4">Data &amp; external service</h2>
+        <p class="mb-0">
+            This connector exchanges business data (e.g. products, customers, orders) between <strong>your Odoo instance</strong>
+            and <strong>your Shopware shop</strong> via the API you configure. You are responsible for lawful processing,
+            Shopware terms, and any data protection obligations that apply to your deployment.
+        </p>
+    </section>
+
+    <section class="container mb-5">
+        <h2 class="border-bottom pb-2 mb-4">Support</h2>
+        <p class="mb-0">
+            For questions and issues related to a purchase on Odoo Apps, use the support channel indicated on the app page.
+            You can also reach the publisher at
+            <a href="mailto:info@axoline.de">info@axoline.de</a>.
+        </p>
+    </section>
+
+    <section class="container mb-5">
+        <p class="text-muted small mb-0">
+            <strong>Axoline</strong> — Shopware® is a trademark of the respective owner. This module is not affiliated with
+            Shopware AG; it uses the published Shopware 6 Admin API.
+        </p>
+    </section>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Root Menu -->
+    <menuitem id="shopware_menu_root"
+              name="Axoline Shopware Connector"
+              web_icon="axoline_shopware_connector,static/description/icon.png"
+              sequence="60"/>
+
+    <!-- Configuration -->
+    <menuitem id="shopware_menu_config"
+              name="Konfiguration"
+              parent="shopware_menu_root"
+              sequence="90"/>
+
+    <menuitem id="shopware_menu_backend"
+              name="Backends"
+              parent="shopware_menu_config"
+              action="shopware_backend_action"
+              sequence="10"/>
+
+    <!-- Data -->
+    <menuitem id="shopware_menu_data"
+              name="Daten"
+              parent="shopware_menu_root"
+              sequence="10"/>
+
+    <menuitem id="shopware_menu_orders"
+              name="Bestellungen"
+              parent="shopware_menu_data"
+              action="shopware_order_action"
+              sequence="10"/>
+
+    <menuitem id="shopware_menu_customers"
+              name="Kunden"
+              parent="shopware_menu_data"
+              action="shopware_customer_action"
+              sequence="20"/>
+
+    <menuitem id="shopware_menu_products"
+              name="Produkte"
+              parent="shopware_menu_data"
+              action="shopware_product_action"
+              sequence="30"/>
+
+    <menuitem id="shopware_menu_categories"
+              name="Kategorien"
+              parent="shopware_menu_data"
+              action="shopware_category_action"
+              sequence="40"/>
+
+    <menuitem id="shopware_menu_price_rules"
+              name="Preisregeln"
+              parent="shopware_menu_data"
+              action="shopware_price_rule_action"
+              sequence="50"/>
+
+</odoo>

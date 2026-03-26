@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Smart button on res.partner form -->
+    <record id="res_partner_form_view_shopware" model="ir.ui.view">
+        <field name="name">res.partner.form.shopware</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_shopware_customers"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-shopping-bag"
+                        invisible="shopware_customer_count == 0">
+                    <field name="shopware_customer_count" widget="statinfo" string="Shopware"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

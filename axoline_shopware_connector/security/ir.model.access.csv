@@ -1,0 +1,15 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_shopware_backend_user,shopware.backend.user,model_shopware_backend,group_shopware_user,1,0,0,0
+access_shopware_backend_manager,shopware.backend.manager,model_shopware_backend,group_shopware_manager,1,1,1,1
+access_shopware_product_user,shopware.product.user,model_shopware_product,group_shopware_user,1,0,0,0
+access_shopware_product_manager,shopware.product.manager,model_shopware_product,group_shopware_manager,1,1,1,1
+access_shopware_category_user,shopware.category.user,model_shopware_category,group_shopware_user,1,0,0,0
+access_shopware_category_manager,shopware.category.manager,model_shopware_category,group_shopware_manager,1,1,1,1
+access_shopware_customer_user,shopware.customer.user,model_shopware_customer,group_shopware_user,1,0,0,0
+access_shopware_customer_manager,shopware.customer.manager,model_shopware_customer,group_shopware_manager,1,1,1,1
+access_shopware_order_user,shopware.order.user,model_shopware_order,group_shopware_user,1,0,0,0
+access_shopware_order_manager,shopware.order.manager,model_shopware_order,group_shopware_manager,1,1,1,1
+access_shopware_order_line_user,shopware.order.line.user,model_shopware_order_line,group_shopware_user,1,0,0,0
+access_shopware_order_line_manager,shopware.order.line.manager,model_shopware_order_line,group_shopware_manager,1,1,1,1
+access_shopware_price_rule_user,shopware.price.rule.user,model_shopware_price_rule,group_shopware_user,1,0,0,0
+access_shopware_price_rule_manager,shopware.price.rule.manager,model_shopware_price_rule,group_shopware_manager,1,1,1,1

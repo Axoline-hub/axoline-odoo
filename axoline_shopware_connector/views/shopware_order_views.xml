@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Order Form View -->
+    <record id="shopware_order_view_form" model="ir.ui.view">
+        <field name="name">shopware.order.form</field>
+        <field name="model">shopware.order</field>
+        <field name="arch" type="xml">
+            <form string="Shopware Bestellung">
+                <header>
+                    <button name="action_view_sale_order"
+                            string="Odoo-Auftrag anzeigen"
+                            type="object"
+                            class="oe_highlight"
+                            invisible="not odoo_sale_order_id"/>
+                    <button name="action_create_sale_order"
+                            string="Odoo-Auftrag erstellen"
+                            type="object"
+                            class="oe_highlight"
+                            invisible="odoo_sale_order_id"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="shopware_order_number"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Bestelldaten">
+                            <field name="backend_id"/>
+                            <field name="shopware_id"/>
+                            <field name="order_date"/>
+                            <field name="amount_total"/>
+                            <field name="amount_net"/>
+                            <field name="currency_code"/>
+                            <field name="state_name"/>
+                            <field name="order_state_technical"/>
+                        </group>
+                        <group string="Kunde">
+                            <field name="customer_name"/>
+                            <field name="customer_email"/>
+                            <field name="shopware_customer_id"/>
+                            <field name="odoo_sale_order_id"/>
+                        </group>
+                    </group>
+                    <group string="Kundenkommentar (Shopware)" colspan="2">
+                        <field name="customer_comment" nolabel="1" placeholder="Kein Kommentar"/>
+                    </group>
+                    <group>
+                        <group string="Rechnungsadresse">
+                            <field name="billing_street"/>
+                            <field name="billing_zipcode"/>
+                            <field name="billing_city"/>
+                            <field name="billing_country_code"/>
+                        </group>
+                        <group string="Lieferadresse">
+                            <field name="shipping_street"/>
+                            <field name="shipping_zipcode"/>
+                            <field name="shipping_city"/>
+                            <field name="shipping_country_code"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="shopware_delivery_id" groups="base.group_no_one"/>
+                            <field name="payment_method"/>
+                            <field name="payment_status"/>
+                            <field name="payment_status_technical" groups="base.group_no_one"/>
+                            <field name="shipping_method"/>
+                        </group>
+                        <group>
+                            <field name="sync_date"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Positionen" name="lines">
+                            <field name="line_ids">
+                                <list>
+                                    <field name="product_number"/>
+                                    <field name="name"/>
+                                    <field name="quantity"/>
+                                    <field name="unit_price"/>
+                                    <field name="total_price"/>
+                                    <field name="shopware_line_gross" optional="hide"/>
+                                    <field name="shopware_product_id"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Order List View -->
+    <record id="shopware_order_view_list" model="ir.ui.view">
+        <field name="name">shopware.order.list</field>
+        <field name="model">shopware.order</field>
+        <field name="arch" type="xml">
+            <list string="Shopware Bestellungen" decoration-muted="not active">
+                <field name="shopware_order_number"/>
+                <field name="order_date"/>
+                <field name="customer_name"/>
+                <field name="customer_email"/>
+                <field name="amount_total"/>
+                <field name="currency_code"/>
+                <field name="state_name"/>
+                <field name="order_state_technical" optional="hide"/>
+                <field name="payment_method"/>
+                <field name="payment_status"/>
+                <field name="odoo_sale_order_id"/>
+                <field name="backend_id"/>
+                <field name="sync_date"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Order Search View -->
+    <record id="shopware_order_view_search" model="ir.ui.view">
+        <field name="name">shopware.order.search</field>
+        <field name="model">shopware.order</field>
+        <field name="arch" type="xml">
+            <search string="Shopware Bestellungen">
+                <field name="shopware_order_number"/>
+                <field name="customer_name"/>
+                <field name="customer_email"/>
+                <field name="payment_status"/>
+                <field name="backend_id"/>
+                <filter string="Ohne Odoo-Auftrag" name="no_so"
+                        domain="[('odoo_sale_order_id', '=', False)]"/>
+                <filter string="Mit Odoo-Auftrag" name="has_so"
+                        domain="[('odoo_sale_order_id', '!=', False)]"/>
+                <group>
+                    <filter string="Backend" name="group_backend" context="{'group_by': 'backend_id'}"/>
+                    <filter string="Status" name="group_state" context="{'group_by': 'state_name'}"/>
+                    <filter string="Zahlungsstatus" name="group_payment"
+                            context="{'group_by': 'payment_status'}"/>
+                    <filter string="Bestelldatum" name="group_date" context="{'group_by': 'order_date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Order Action -->
+    <record id="shopware_order_action" model="ir.actions.act_window">
+        <field name="name">Shopware Bestellungen</field>
+        <field name="res_model">shopware.order</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'active_test': False}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Noch keine Bestellungen synchronisiert
+            </p>
+            <p>
+                Starten Sie die Bestell-Synchronisation im Backend.
+            </p>
+        </field>
+    </record>
+
+</odoo>

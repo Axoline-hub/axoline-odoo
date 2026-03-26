@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="sale_order_view_form_shopware" model="ir.ui.view">
+        <field name="name">sale.order.form.shopware</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="priority" eval="50"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button
+                    name="action_view_shopware_order"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-shopping-cart"
+                    invisible="not shopware_order_id"
+                    title="Shopware-Bestellung im Axoline Shopware Connector öffnen"
+                >
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">Shopware</span>
+                    </div>
+                </button>
+            </xpath>
+            <xpath expr="//page[@name='other_information']/group" position="inside">
+                <group string="Shopware" name="shopware_order_info">
+                    <field name="shopware_order_id" readonly="1"/>
+                    <field name="shopware_order_state"/>
+                    <field name="shopware_payment_method"/>
+                    <field name="shopware_payment_status"/>
+                    <field name="shopware_shipping_method"/>
+                    <field name="shopware_customer_comment" colspan="2" placeholder="Kundenkommentar aus Shopware"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="sale_order_tree_shopware" model="ir.ui.view">
+        <field name="name">sale.order.list.shopware</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.sale_order_tree"/>
+        <field name="priority" eval="50"/>
+        <field name="arch" type="xml">
+            <list position="attributes">
+                <attribute name="decoration-warning">shopware_has_customer_comment</attribute>
+            </list>
+            <field name="partner_id" position="after">
+                <field name="shopware_has_customer_comment" column_invisible="1"/>
+                <field
+                    name="shopware_customer_comment_preview"
+                    string="Shopware-Kommentar"
+                    optional="show"
+                />
+            </field>
+        </field>
+    </record>
+
+</odoo>
