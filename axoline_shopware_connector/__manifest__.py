@@ -49,7 +49,7 @@ Bidirectional integration between Odoo and Shopware 6 via the Admin API (OAuth2)
         'views/res_partner_views.xml',
     ],
     'images': [
-        'static/description/banner.png',
+        'static/description/main_screenshot.png',
     ],
     'installable': True,
     'application': True,
