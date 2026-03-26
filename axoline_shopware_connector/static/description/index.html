@@ -14,75 +14,209 @@
             <div class="col-md-10">
                 <h1 class="mb-2">Axoline Shopware Connector</h1>
                 <p class="lead mb-0 text-muted">
-                    Connect <strong>Shopware 6</strong> to <strong>Odoo 19</strong>: synchronize products, categories,
-                    customers, and orders inside your Odoo database—no separate middleware server required.
+                    <strong>Bidirectional integration</strong> between <strong>Shopware 6</strong> and <strong>Odoo 19</strong>:
+                    products (including variants), categories, price rules, customers, and orders—using the
+                    <strong>Shopware Admin API</strong> (OAuth2). Run fulfillment and invoicing in Odoo and optionally
+                    <strong>push delivery and order state</strong> back to Shopware. No separate middleware server required.
                 </p>
             </div>
         </div>
+    </section>
+
+    <section class="container mb-5">
+        <h2 class="border-bottom pb-2 mb-4">Why this connector</h2>
+        <p>
+            The module adds a dedicated <strong>connector layer</strong> (<code>shopware.*</code> models) that mirrors Shopware
+            data in Odoo and links it to standard records (<code>product.template</code>, <code>product.product</code>,
+            <code>product.category</code>, <code>res.partner</code>, <code>sale.order</code>). You configure one or more
+            <strong>Shopware backends</strong> (one Shopware instance each), test the connection, then import on a schedule
+            or on demand—and export to Shopware where enabled.
+        </p>
     </section>
 
     <section class="container mb-5">
         <h2 class="border-bottom pb-2 mb-4">Key features</h2>
         <div class="row">
             <div class="col-md-6 mb-4">
-                <h3 class="h5">Products &amp; categories</h3>
+                <h3 class="h5">Products, variants &amp; price rules</h3>
                 <p class="mb-0">
-                    Import and align <strong>products</strong> and <strong>product categories</strong> between Shopware and Odoo.
-                    Export paths support pushing Odoo data back to Shopware where configured.
+                    Import Shopware products with <strong>variants</strong>, references, and pricing context.
+                    <strong>Price rules</strong> are synced first (when product sync is on) and mapped to Odoo
+                    <strong>pricelists</strong>. Optional preservation of article number and barcode when product attributes change.
+                    Optional <strong>export</strong> of categories and products from Odoo to Shopware (manual actions).
+                </p>
+            </div>
+            <div class="col-md-6 mb-4">
+                <h3 class="h5">Categories</h3>
+                <p class="mb-0">
+                    Delta sync by <code>updatedAt</code>, backfill of missing remote IDs, and resolution of
+                    <strong>parent/child</strong> hierarchy. Links to Odoo <code>product.category</code> where applicable.
                 </p>
             </div>
             <div class="col-md-6 mb-4">
                 <h3 class="h5">Customers</h3>
                 <p class="mb-0">
-                    Synchronize <strong>customers</strong> and link them to Odoo contacts for a single customer view
-                    across ecommerce and ERP.
+                    Synchronize Shopware customers with associations (addresses, etc.) and link them to
+                    <strong>Odoo contacts</strong> for a single customer view across ecommerce and ERP.
                 </p>
             </div>
             <div class="col-md-6 mb-4">
-                <h3 class="h5">Orders &amp; sales</h3>
+                <h3 class="h5">Orders &amp; sales orders</h3>
                 <p class="mb-0">
-                    Import <strong>sales orders</strong> from Shopware into Odoo, including linkage to the Shopware order record.
-                    Order and payment metadata can be reflected on the Odoo sales order for traceability.
+                    Import orders into <strong>Shopware order</strong> records and create/update linked
+                    <strong>Odoo sales orders</strong>. JSON:API enrichment for orders; configurable filters (status, date from,
+                    per-run limit). Optional refresh of <strong>already linked</strong> orders to keep payment status current.
                 </p>
             </div>
             <div class="col-md-6 mb-4">
-                <h3 class="h5">Automation</h3>
+                <h3 class="h5">Odoo → Shopware process feedback</h3>
                 <p class="mb-0">
-                    Use <strong>scheduled jobs (cron)</strong> for recurring sync and run <strong>manual</strong> operations
-                    from the Shopware backend screens in Odoo.
+                    After import, optionally transition Shopware orders from <strong>open</strong> to
+                    <strong>in progress</strong>. When pickings are done, optionally set delivery to
+                    <strong>shipped</strong>. When all relevant deliveries are done and a <strong>posted customer invoice</strong>
+                    exists, optionally mark the Shopware order <strong>completed</strong> (transition names configurable).
+                </p>
+            </div>
+            <div class="col-md-6 mb-4">
+                <h3 class="h5">Automation &amp; operations</h3>
+                <p class="mb-0">
+                    Built-in <strong>cron</strong> (default: every 15 minutes) for full sync on connected, active backends.
+                    <strong>Manual</strong> sync per entity, <strong>API diagnosis</strong>, reset of sync timestamps for a
+                    forced re-import, and detailed <strong>logging</strong>.
                 </p>
             </div>
         </div>
     </section>
 
     <section class="container mb-5">
-        <h2 class="border-bottom pb-2 mb-4">How it works</h2>
-        <p>
-            The module adds a <strong>Shopware</strong> application menu and <strong>backend</strong> records where you store
-            your Shopware 6 API credentials (OAuth client). After a successful connection test, you can import and export
-            the supported objects according to your settings.
+        <h2 class="border-bottom pb-2 mb-4">Architecture overview</h2>
+        <p class="mb-3">
+            Communication is <strong>HTTPS</strong> from Odoo to your shop base URL. Authentication uses
+            <strong>OAuth2 client credentials</strong>. The diagram below illustrates the logical layers.
         </p>
+        <div class="text-center mb-3" style="overflow-x: auto;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 200" role="img" aria-label="Architecture: Shopware API, Odoo backend, connector models, Odoo standard" style="max-width: 100%; height: auto;">
+                <defs>
+                    <linearGradient id="bg1" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#e8f4fc"/>
+                        <stop offset="100%" style="stop-color:#d4e8f7"/>
+                    </linearGradient>
+                    <linearGradient id="bg2" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#f5f5f5"/>
+                        <stop offset="100%" style="stop-color:#e8e8e8"/>
+                    </linearGradient>
+                    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+                        <polygon points="0 0, 8 4, 0 8" fill="#875A7B"/>
+                    </marker>
+                </defs>
+                <rect x="8" y="20" width="150" height="160" rx="8" fill="url(#bg1)" stroke="#875A7B" stroke-width="2"/>
+                <text x="83" y="48" text-anchor="middle" font-family="system-ui,sans-serif" font-size="13" font-weight="bold" fill="#333">Shopware 6</text>
+                <text x="83" y="72" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" fill="#555">Admin API</text>
+                <text x="83" y="100" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#666">REST / JSON</text>
+                <text x="83" y="128" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#666">OAuth2</text>
+
+                <path d="M 168 100 L 218 100" stroke="#875A7B" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+                <path d="M 218 100 L 168 100" stroke="#875A7B" stroke-width="2" fill="none" stroke-dasharray="4 3" opacity="0.7"/>
+
+                <rect x="228" y="35" width="130" height="130" rx="8" fill="#fff" stroke="#875A7B" stroke-width="2"/>
+                <text x="293" y="62" text-anchor="middle" font-family="system-ui,sans-serif" font-size="12" font-weight="bold" fill="#333">shopware.</text>
+                <text x="293" y="78" text-anchor="middle" font-family="system-ui,sans-serif" font-size="12" font-weight="bold" fill="#333">backend</text>
+                <text x="293" y="108" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#666">Credentials</text>
+                <text x="293" y="128" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#666">Sync options</text>
+
+                <path d="M 368 100 L 418 100" stroke="#875A7B" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+
+                <rect x="428" y="20" width="285" height="160" rx="8" fill="url(#bg2)" stroke="#666" stroke-width="1"/>
+                <text x="570" y="44" text-anchor="middle" font-family="system-ui,sans-serif" font-size="12" font-weight="bold" fill="#333">Connector layer → Odoo standard</text>
+                <text x="445" y="72" font-family="system-ui,sans-serif" font-size="10" fill="#444">shopware.product → product.*</text>
+                <text x="445" y="92" font-family="system-ui,sans-serif" font-size="10" fill="#444">shopware.category → product.category</text>
+                <text x="445" y="112" font-family="system-ui,sans-serif" font-size="10" fill="#444">shopware.customer → res.partner</text>
+                <text x="445" y="132" font-family="system-ui,sans-serif" font-size="10" fill="#444">shopware.order → sale.order</text>
+                <text x="445" y="152" font-family="system-ui,sans-serif" font-size="10" fill="#444">Picking / invoice → Shopware state</text>
+            </svg>
+        </div>
+    </section>
+
+    <section class="container mb-5">
+        <h2 class="border-bottom pb-2 mb-4">Full sync sequence</h2>
+        <p>
+            When you run <strong>Sync all</strong> (or the scheduled job), phases run in order. A failure in one phase is
+            logged and does not block the next. If product sync is enabled, <strong>price rules</strong> run first, then
+            categories, products, customers, and orders—each according to its checkbox on the backend.
+        </p>
+        <ol class="mb-0">
+            <li>Price rules (if product sync is on)</li>
+            <li>Categories (if enabled)</li>
+            <li>Products (if enabled)</li>
+            <li>Customers (if enabled)</li>
+            <li>Orders (if enabled)</li>
+        </ol>
+    </section>
+
+    <section class="container mb-5">
+        <h2 class="border-bottom pb-2 mb-4">Backend configuration (highlights)</h2>
+        <div class="table-responsive">
+            <table class="table table-sm table-bordered">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">Area</th>
+                        <th scope="col">What you can configure</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Connection</td>
+                        <td>Shop URL, OAuth client ID/secret, company, active, connection test → <strong>Connected</strong> status</td>
+                    </tr>
+                    <tr>
+                        <td>Entity toggles</td>
+                        <td>Sync products, categories, customers, orders; optional export of products and categories</td>
+                    </tr>
+                    <tr>
+                        <td>Defaults</td>
+                        <td>Sales channel ID (export), default tax, default payment term for generated sales orders</td>
+                    </tr>
+                    <tr>
+                        <td>Order import</td>
+                        <td>Status filter, orders from date, max orders per run, linked-order refresh limit, test order UUID</td>
+                    </tr>
+                    <tr>
+                        <td>Shopware transitions</td>
+                        <td>Names for <em>open → in progress</em>, delivery <em>ship</em>, order <em>complete</em> (if your state machine differs)</td>
+                    </tr>
+                    <tr>
+                        <td>Performance</td>
+                        <td>API batch size, optional customer limit per run</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="container mb-5">
+        <h2 class="border-bottom pb-2 mb-4">Security</h2>
         <p class="mb-0">
-            Communication uses the <strong>Shopware 6 Admin API</strong>. Your Shopware shop must be reachable from the Odoo
-            server (network / firewall). Operation requires valid API credentials created in Shopware.
+            The module defines the <strong>Axoline Shopware Connector</strong> privilege with groups
+            <strong>User</strong> (read connector data) and <strong>Manager</strong> (full CRUD on connector models).
+            Backend records support chatter (messages and activities) for collaboration and audit.
         </p>
     </section>
 
     <section class="container mb-5">
         <h2 class="border-bottom pb-2 mb-4">Requirements</h2>
         <ul class="mb-0">
-            <li><strong>Odoo</strong> 19.0 (Community or Enterprise), with standard apps as declared in the module dependencies.</li>
-            <li><strong>Shopware 6</strong> with Admin API access and OAuth credentials (client ID / secret).</li>
-            <li>Outbound HTTPS from Odoo to your Shopware base URL.</li>
+            <li><strong>Odoo</strong> 19.0 (Community or Enterprise), with dependencies: Sales, Stock, Product, Contacts, Accounting (as declared in the module manifest).</li>
+            <li><strong>Shopware 6</strong> with Admin API access and an integration providing <strong>client ID</strong> and <strong>client secret</strong>.</li>
+            <li><strong>Outbound HTTPS</strong> from the Odoo server to your Shopware base URL (firewall / network).</li>
         </ul>
     </section>
 
     <section class="container mb-5">
-        <h2 class="border-bottom pb-2 mb-4">Data &amp; external service</h2>
+        <h2 class="border-bottom pb-2 mb-4">Data &amp; compliance</h2>
         <p class="mb-0">
             This connector exchanges business data (e.g. products, customers, orders) between <strong>your Odoo instance</strong>
             and <strong>your Shopware shop</strong> via the API you configure. You are responsible for lawful processing,
-            Shopware terms, and any data protection obligations that apply to your deployment.
+            Shopware terms of use, and any data protection obligations applicable to your deployment.
         </p>
     </section>
 
@@ -91,7 +225,8 @@
         <p class="mb-0">
             For questions and issues related to a purchase on Odoo Apps, use the support channel indicated on the app page.
             You can also reach the publisher at
-            <a href="mailto:info@axoline.de">info@axoline.de</a>.
+            <a href="mailto:info@axoline.de">info@axoline.de</a> —
+            <a href="https://www.axoline.de" target="_blank" rel="noopener noreferrer">www.axoline.de</a>
         </p>
     </section>
 

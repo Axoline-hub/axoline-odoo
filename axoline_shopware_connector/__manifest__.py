@@ -2,27 +2,25 @@
 
 {
     'name': 'Axoline Shopware Connector',
-    'version': '19.0.1.1.48',
+    'version': '19.0.1.1.47',
     'category': 'Sales/Sales',
-    'summary': 'Bidirektionale Synchronisation zwischen Odoo und Shopware 6',
+    'summary': 'Bidirectional sync between Odoo and Shopware 6',
     'description': """
-Axoline Shopware Connector für Odoo 19
-=======================================
+Axoline Shopware Connector for Odoo 19
+======================================
 
-Dieses Modul ermöglicht die bidirektionale Synchronisation zwischen
-Odoo und einem Shopware 6 Shop:
+Bidirectional integration between Odoo and Shopware 6 via the Admin API (OAuth2):
 
-* **Bestellungen** aus Shopware importieren
-* **Kundendaten** synchronisieren
-* **Produkte** bidirektional abgleichen
-* **Kategorien** bidirektional abgleichen
-* **Automatische Cron-Synchronisation**
-* **Manuelle Synchronisation** über das Backend
+* Import **orders** from Shopware into Odoo sales orders
+* Synchronize **customers** and link them to contacts
+* Align **products** (including variants) and **categories** with optional export to Shopware
+* Sync **price rules** to Odoo pricelists when product sync is enabled
+* **Scheduled (cron)** and **manual** synchronization from Shopware backend records
+* Optional **state transitions** in Shopware after fulfillment and invoicing in Odoo
     """,
     'author': 'Axoline',
     'website': 'https://www.axoline.de',
     'support': 'info@axoline.de',
-	'images': ['static/description/main_screenshot.png'],
     'price': 299.0,
     'currency': 'EUR',
     'depends': [
